@@ -8,3 +8,159 @@ Measuring idle latencies for random access (in ns)...
 		Numa node
 Numa node	     0	
        0	 112.0	
+
+Intel(R) Memory Latency Checker - v3.11b
+Command line parameters: --bandwidth_matrix 
+
+Using buffer size of 100.000MiB/thread for reads and an additional 100.000MiB/thread for writes
+Measuring Memory Bandwidths between nodes within system 
+Bandwidths are in MB/sec (1 MB/sec = 1,000,000 Bytes/sec)
+Using all the threads from each core if Hyper-threading is enabled
+Using Read-only traffic type
+		Numa node
+Numa node	     0	
+       0	120251.6
+
+asykop01@node0:~/HW1$ ioping -c 20 /tmp/
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=1 time=2.78 ms (warmup)
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=2 time=259.1 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=3 time=279.1 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=4 time=266.4 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=5 time=195.2 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=6 time=279.8 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=7 time=265.6 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=8 time=189.1 us (fast)
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=9 time=266.1 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=10 time=314.4 us (slow)
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=11 time=296.4 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=12 time=300.9 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=13 time=274.5 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=14 time=297.0 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=15 time=141.9 us (fast)
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=16 time=265.6 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=17 time=269.3 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=18 time=251.4 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=19 time=189.6 us
+4 KiB <<< /tmp/ (ext3 /dev/sda3 62.4 GiB): request=20 time=273.2 us
+
+--- /tmp/ (ext3 /dev/sda3 62.4 GiB) ioping statistics ---
+19 requests completed in 4.87 ms, 76 KiB read, 3.90 k iops, 15.2 MiB/s
+generated 20 requests in 19.0 s, 80 KiB, 1 iops, 4.21 KiB/s
+min/avg/max/mdev = 141.9 us / 256.6 us / 314.4 us / 43.9 us
+
+asykop01@node0:~/HW1$ fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1  --name=fiotest --filename=testfio --bs=4k --iodepth=64  --size=1G --readwrite=read
+fiotest: (g=0): rw=read, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=64
+fio-3.28
+Starting 1 process
+fiotest: Laying out IO file (1 file / 1024MiB)
+Jobs: 1 (f=1): [R(1)][100.0%][r=191MiB/s][r=48.9k IOPS][eta 00m:00s]
+fiotest: (groupid=0, jobs=1): err= 0: pid=9260: Mon Sep 29 10:23:40 2025
+  read: IOPS=48.9k, BW=191MiB/s (200MB/s)(1024MiB/5362msec)
+   bw (  KiB/s): min=186512, max=203296, per=100.00%, avg=196196.80, stdev=5425.80, samples=10
+   iops        : min=46628, max=50824, avg=49049.40, stdev=1356.06, samples=10
+  cpu          : usr=3.64%, sys=28.17%, ctx=79757, majf=0, minf=73
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwts: total=262144,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=191MiB/s (200MB/s), 191MiB/s-191MiB/s (200MB/s-200MB/s), io=1024MiB (1074MB), run=5362-5362msec
+
+Disk stats (read/write):
+  sda: ios=133580/16, merge=117969/256, ticks=167314/34, in_queue=167348, util=98.22%
+
+
+asykop01@node0:~/HW1$ sudo hdparm -I /dev/sda
+
+/dev/sda:
+
+ATA device, with non-removable media
+	Model Number:       MTFDDAK480TDN                           
+	Serial Number:      20262935A086
+	Firmware Revision:  D1DF004
+	Transport:          Serial, ATA8-AST, SATA 1.0a, SATA II Extensions, SATA Rev 2.5, SATA Rev 2.6, SATA Rev 3.0
+Standards:
+	Used: unknown (minor revision code 0x006d) 
+	Supported: 10 9 8 7 6 5 
+	Likely used: 10
+Configuration:
+	Logical		max	current
+	cylinders	16383	0
+	heads		16	0
+	sectors/track	63	0
+	--
+	LBA    user addressable sectors:   268435455
+	LBA48  user addressable sectors:   937703088
+	Logical  Sector size:                   512 bytes
+	Physical Sector size:                  4096 bytes
+	Logical Sector-0 offset:                  0 bytes
+	device size with M = 1024*1024:      457862 MBytes
+	device size with M = 1000*1000:      480103 MBytes (480 GB)
+	cache/buffer size  = unknown
+	Form Factor: 2.5 inch
+	Nominal Media Rotation Rate: Solid State Device
+Capabilities:
+	LBA, IORDY(can be disabled)
+	Queue depth: 32
+	Standby timer values: spec'd by Standard, with device specific minimum
+	R/W multiple sector transfer: Max = 16	Current = 16
+	Advanced power management level: 254
+	DMA: mdma0 mdma1 mdma2 udma0 udma1 udma2 udma3 udma4 udma5 *udma6 
+	     Cycle time: min=120ns recommended=120ns
+	PIO: pio0 pio1 pio2 pio3 pio4 
+	     Cycle time: no flow control=120ns  IORDY flow control=120ns
+Commands/features:
+	Enabled	Supported:
+	   *	SMART feature set
+	   *	Power Management feature set
+	    	Write cache
+	   *	Look-ahead
+	   *	WRITE_BUFFER command
+	   *	READ_BUFFER command
+	   *	NOP cmd
+	   *	DOWNLOAD_MICROCODE
+	   *	Advanced Power Management feature set
+	   *	48-bit Address feature set
+	   *	Mandatory FLUSH_CACHE
+	   *	FLUSH_CACHE_EXT
+	   *	SMART error logging
+	   *	SMART self-test
+	   *	General Purpose Logging feature set
+	   *	64-bit World wide name
+	   *	IDLE_IMMEDIATE with UNLOAD
+	    	Write-Read-Verify feature set
+	   *	WRITE_UNCORRECTABLE_EXT command
+	   *	{READ,WRITE}_DMA_EXT_GPL commands
+	   *	Segmented DOWNLOAD_MICROCODE
+	   *	unknown 119[6]
+	    	unknown 119[8]
+	   *	Gen1 signaling speed (1.5Gb/s)
+	   *	Gen2 signaling speed (3.0Gb/s)
+	   *	Gen3 signaling speed (6.0Gb/s)
+	   *	Native Command Queueing (NCQ)
+	   *	Phy event counters
+	   *	NCQ priority information
+	   *	READ_LOG_DMA_EXT equivalent to READ_LOG_EXT
+	   *	DMA Setup Auto-Activate optimization
+	   *	Software settings preservation
+	   *	SMART Command Transport (SCT) feature set
+	   *	SCT Write Same (AC2)
+	   *	SCT Error Recovery Control (AC3)
+	   *	SCT Features Control (AC4)
+	   *	SCT Data Tables (AC5)
+	   *	SANITIZE_ANTIFREEZE_LOCK_EXT command
+	   *	SANITIZE feature set
+	   *	CRYPTO_SCRAMBLE_EXT command
+	   *	BLOCK_ERASE_EXT command
+	   *	DOWNLOAD MICROCODE DMA command
+	   *	WRITE BUFFER DMA command
+	   *	READ BUFFER DMA command
+	   *	Data Set Management TRIM supported (limit 8 blocks)
+	   *	Deterministic read ZEROs after TRIM
+Logical Unit WWN Device Identifier: 500a07512935a086
+	NAA		: 5
+	IEEE OUI	: 00a075
+	Unique ID	: 12935a086
+Checksum: correct
