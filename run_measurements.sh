@@ -13,7 +13,7 @@ sudo apt-get install -y ioping fio hdparm iperf iputils-ping wget tar
 if [ ! -f "./mlc_v3.9/mlc" ]; then
     echo "Downloading Intel MLC..."
     wget -q https://downloadmirror.intel.com/736634/mlc_v3.9.tgz -O mlc_v3.9.tgz
-    tar -xvzf mlc_v3.9.tgz
+    cd mlc_v3.9
 fi
 
 echo "===== Memory Measurements =====" > $OUTPUT
